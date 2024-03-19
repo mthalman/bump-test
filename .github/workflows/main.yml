@@ -13,5 +13,3 @@ jobs:
         with:
           target-image-name: ghcr.io/mthalman/bump-test:main
           base-image-name: alpine:3.18
-          repository: mthalman/bump-test
-          token: ${{ secrets.PAT }}
