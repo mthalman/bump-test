@@ -26,5 +26,5 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.PAT }}
-          repository: username/my-repo
+          repository: mthalman/bump-test
           event-type: base-image-update
