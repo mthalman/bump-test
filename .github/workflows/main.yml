@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: mthalman/docker-bump-action@v0.1
+      - uses: mthalman/docker-bump-action@v1
         with:
           target-image-name: ghcr.io/mthalman/bump-test:main
           base-image-name: alpine:3.18
