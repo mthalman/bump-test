@@ -18,7 +18,7 @@ jobs:
           azPSVersion: latest
           inlineScript: |
             $result = docker run --rm ghcr.io/mthalman/dredge image compare layers --output json alpine:latest ghcr.io/mthalman/bump-test:main --os linux --arch amd64 | ConvertFrom-Json
-            echo "::set-env name=TRIGGER_WORKFLOW::$($result.Summary.TargetIncludesAllBaseLayers)"
+            echo "TRIGGER_WORKFLOW=$($result.Summary.TargetIncludesAllBaseLayers)" >> "$GITHUB_ENV"
 
       - name: Repository Dispatch
         if: env.TRIGGER_WORKFLOW == 'True'
