@@ -18,9 +18,12 @@ jobs:
           azPSVersion: latest
           inlineScript: |
             $result = docker run --rm ghcr.io/mthalman/dredge image compare layers --output json alpine:latest ghcr.io/mthalman/bump-test:main --os linux --arch amd64 | ConvertFrom-Json
-            if ($result.Summary.TargetIncludesAllBaseLayers) {
-              Write-Host "Equal"
-            }
-            else {
-              Write-Host "Not Equal"
-            }
+            echo "::set-env name=TRIGGER_WORKFLOW::$($result.Summary.TargetIncludesAllBaseLayers)"
+
+      - name: Repository Dispatch
+        if: env.TRIGGER_WORKFLOW == 'True'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: username/my-repo
+          event-type: base-image-update
