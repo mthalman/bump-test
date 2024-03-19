@@ -9,22 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Azure PowerShell Action
-        uses: Azure/powershell@v1
+      - uses: mthalman/docker-bump-action@v1
         with:
-          azPSVersion: latest
-          inlineScript: |
-            $result = docker run --rm ghcr.io/mthalman/dredge image compare layers --output json alpine:latest ghcr.io/mthalman/bump-test:main --os linux --arch amd64 | ConvertFrom-Json
-            echo "TRIGGER_WORKFLOW=$($result.Summary.TargetIncludesAllBaseLayers)" >> "$env:GITHUB_ENV"
-            Get-Content $env:GITHUB_ENV
-
-      - name: Repository Dispatch
-        if: env.TRIGGER_WORKFLOW == 'True'
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.PAT }}
+          target-image-name: ghcr.io/mthalman/bump-test:main
+          base-image-name: alpine:latest
           repository: mthalman/bump-test
-          event-type: base-image-update
+          token: ${{ secrets.PAT }}
